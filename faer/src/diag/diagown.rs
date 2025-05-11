@@ -138,6 +138,15 @@ impl<T, Dim: Shape> Diag<T, Dim> {
 		}
 	}
 
+	/// see [`DiagRef::inverse`]
+	#[inline]
+	pub fn inverse(self) -> Diag<T, Dim>
+	where
+		T: ComplexField,
+	{
+		Diag::from_fn(self.dim(), |i| recip(&self.0.inner[i]))
+	}
+
 	/// returns the dimension of `self`
 	#[inline]
 	pub fn dim(&self) -> Dim {
@@ -152,6 +161,14 @@ impl<T, Dim: Shape> Diag<T, Dim> {
 	{
 		Self {
 			0: Own { inner: Col::zeros(dim) },
+		}
+	}
+
+	/// returns a new diagonal with dimension `dim`, filled with the provided function
+	#[inline]
+	pub fn from_fn(dim: Dim, f: impl FnMut(crate::Idx<Dim>) -> T) -> Self {
+		Self {
+			0: Own { inner: Col::from_fn(dim, f) },
 		}
 	}
 

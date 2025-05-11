@@ -191,6 +191,15 @@ impl<'a, T, Dim: Shape, Stride: crate::Stride> DiagMut<'a, T, Dim, Stride> {
 		}
 	}
 
+	/// see [`DiagRef::inverse`]
+	#[inline]
+	pub fn inverse(self) -> Diag<T, Dim>
+	where
+		T: ComplexField,
+	{
+		Diag::from_fn(self.dim(), |i| recip(&self.0.inner[i]))
+	}
+
 	/// returns the dimension of `self`
 	#[inline]
 	pub fn dim(&self) -> Dim {

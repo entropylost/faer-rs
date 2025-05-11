@@ -146,6 +146,15 @@ impl<'a, T, Dim: Shape, Stride: crate::Stride> DiagRef<'a, T, Dim, Stride> {
 		}
 	}
 
+	/// returns the inverse of `self`
+	#[inline]
+	pub fn inverse(self) -> Diag<T, Dim>
+	where
+		T: ComplexField,
+	{
+		Diag::from_fn(self.dim(), |i| recip(&self.0.inner[i]))
+	}
+
 	/// returns the dimension of `self`
 	#[inline]
 	pub fn dim(&self) -> Dim {
